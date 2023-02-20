@@ -1,0 +1,28 @@
+Objetive: 
+    Make a web application that help an enterprise track incomes, expenses and other things
+
+User:
+    Like "User" i need a login page.
+    Like "User" i want to upload an income to keep track.
+    Like "User" i want to upload an expense to keep track.
+    Like "User" i want a "User" dashboard that show me information.
+    Like "Manager" i need a profile to meet my team.
+
+Manager:
+    Like "Manager" i want register a "User" that help me.
+    Like "Manager" i want to upload an income to keep track.
+    Like "Manager" i want to upload an expense to keep track.
+    Like "Manager" i want a "manager" dashboard that show me information.
+    Like "Manager" i need add and remove users to manage the team.
+    Like "Manager" i need a profile to meet my team.
+
+Admin:
+    Like "Admin" i want register a "User" and "Manager" that help me.
+    Like "Admin" i want to upload an income to keep track.
+    Like "Admin" i want to upload an expense to keep track.
+    Like "Admin" i want a "Admin" dashboard that show me information.
+    Like "Admin" i need add and remove users and managers to manage the team.
+    Like "Admin" i need a profile to meet my team.
+    Like "Admin" i need to give rol to permissions.
+
+
