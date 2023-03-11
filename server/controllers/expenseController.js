@@ -33,20 +33,24 @@ const createExpense = async (req, res) => {
     try {
         const { UserCreator, outTitle, outDescription, outAmount } = req.body;
 
-        const user = await userModel.findById(UserCreator);
-
-        const expenseObject = {
-            UserCreator: user._id, outTitle, outDescription, outAmount
-        }
-
-        const expenseCreated = await expenseModel.create(expenseObject);
-
-        user.expenses = user.expenses.concat(expenseCreated._id)
-        await user.save()
-        if (expenseCreated) {
-            res.status(201).json({ expenseCreated });
+        if (UserCreator.length === 0) {
+            res.status(401).json({ message: 'need token' })
         } else {
-            res.status(401).json({ error: error.message });
+            const user = await userModel.findById(UserCreator);
+
+            const expenseObject = {
+                UserCreator: user._id, outTitle, outDescription, outAmount
+            }
+
+            const expenseCreated = await expenseModel.create(expenseObject);
+
+            user.expenses = user.expenses.concat(expenseCreated._id)
+            await user.save()
+            if (expenseCreated) {
+                res.status(201).json({ expenseCreated });
+            } else {
+                res.status(401).json({ message: 'Need token' });
+            }
         }
     } catch (error) {
         console.log(`Ups Create Expense: ${error}`);

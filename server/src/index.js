@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 // ROUTES IMPORT
 const userRoutes = require('../routes/v1/userRoutes');
+const feedBacks = require('../routes/v1/feedBackRoutes');
 const authRoutes = require('../routes/v1/authRoutes');
 const expenseRoutes = require('../routes/v1/expenseRoutes');
 const incomeRoutes = require('../routes/v1/incomeRoutes');
@@ -16,16 +17,11 @@ app.use(cookieParser());
 require('dotenv').config();
 
 // USING ROUTES
-app.use('/api/v1', userRoutes);
-app.use('/api/v1', authRoutes);
-app.use('/api/v1', expenseRoutes);
-app.use('/api/v1', incomeRoutes);
-
-app.post('/api/v1/logout', (req, res) => {
-    res.cookie('my cookie', 'cooookie')
-    res.send('Hello world')
-})
-
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/feedbacks', feedBacks);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/expenses', expenseRoutes);
+app.use('/api/v1/incomes', incomeRoutes);
 
 // USING CONNECTION DB FUNCTION IMPORTED
 dbConnection();

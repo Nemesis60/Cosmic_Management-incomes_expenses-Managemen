@@ -1,6 +1,7 @@
 const userModel = require('../models/usersModel');
 const incomeModel = require('../models/incomesModel');
 const expenseModel = require('../models/expensesModel');
+const feedbackModel = require('../models/feedbackModel');
 const bcrypt = require('bcrypt');
 const { json } = require('express');
 
@@ -17,7 +18,7 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-const userProfile = async (req, res) => {
+const getUser = async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -78,56 +79,37 @@ const deleteUser = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const userDeleted = await userModel.findByIdAndDelete(id);
-        if (userDeleted) {
-            res.status(201).json({ message: "User Deleted" })
+        const user = await userModel.findById(id)
+        const rol = user.rol
+        if (rol === 'Admin') {
+            res.status(401).json({ message: "You can't delete Admins" })
         } else {
-            res.status(401).json({ error: error.message })
+            const userDeleted = await userModel.findByIdAndDelete(id);
+            if (userDeleted) {
+                const incomesDeleted = await incomeModel.deleteMany({
+                    UserCreator: id
+                })
+                const expensesDeleted = await expenseModel.deleteMany({
+                    UserCreator: id
+                })
+                const feedbacksDeleted = await feedbackModel.deleteMany({
+                    User: id
+                })
+
+                res.status(201).json({ message: "User Deleted" })
+            } else {
+                res.status(401).json({ error: error.message })
+            }
         }
     } catch (error) {
         console.log(`Ups Delete User: ${error}`)
     }
 }
 
-const getIncomesByUser = async (req, res) => {
-    try {
-        // refer to the objectId that income model have
-        const id = req.params.id;
-
-        const incomes = await incomeModel.find({ User: id })
-        if (incomes) {
-            res.status(200).json({ incomes })
-        } else {
-            res.status(404).json({ error: error.message })
-        }
-    } catch (error) {
-        console.log(`Ups IncomeBy: ${error}`);
-    }
-}
-
-const getExpensesByUser = async (req, res) => {
-    try {
-        // refer to the objectId that expense model have
-        const id = req.params.id;
-
-        const expenses = await expenseModel.find({ User: id }, {})
-        console.log(expenses)
-        if (expenses) {
-            res.status(200).json({ expenses })
-        } else {
-            res.status(404).json({ error: error.message })
-        }
-    } catch (error) {
-        console.log(`Ups ExpenseBy: ${error}`);
-    }
-}
-
 module.exports = {
     getAllUsers,
-    userProfile,
+    getUser,
     createUser,
     updateUser,
     deleteUser,
-    getIncomesByUser,
-    getExpensesByUser
 }

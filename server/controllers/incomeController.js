@@ -33,20 +33,24 @@ const createIncome = async (req, res) => {
     try {
         const { UserCreator, inTitle, inDescription, inAmount } = req.body;
 
-        const user = await userModel.findById(UserCreator);
-
-        const incomeObject = {
-            UserCreator, inTitle, inDescription, inAmount
-        }
-
-        const incomeCreated = await incomeModel.create(incomeObject);
-
-        user.incomes = user.incomes.concat(incomeCreated._id)
-        await user.save()
-        if (incomeCreated) {
-            res.status(201).json({ incomeCreated });
+        if (UserCreator.length === 0) {
+            res.status(401).json({ message: 'need token' })
         } else {
-            res.status(401).json({ error: error.message });
+            const user = await userModel.findById(UserCreator);
+
+            const incomeObject = {
+                UserCreator, inTitle, inDescription, inAmount
+            }
+
+            const incomeCreated = await incomeModel.create(incomeObject);
+
+            user.incomes = user.incomes.concat(incomeCreated._id)
+            await user.save()
+            if (incomeCreated) {
+                res.status(201).json({ incomeCreated });
+            } else {
+                res.status(401).json({ error: error.message });
+            }
         }
     } catch (error) {
         console.log(`Ups Create Income: ${error}`);

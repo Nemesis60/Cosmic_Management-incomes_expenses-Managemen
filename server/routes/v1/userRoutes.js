@@ -3,12 +3,10 @@ const userCtr = require('../../controllers/userController');
 
 const userRoute = express.Router();
 
-userRoute.get('/users', userCtr.getAllUsers);
-userRoute.get('/profile/:id', userCtr.userProfile);
-userRoute.post('/new/user', userCtr.createUser);
-userRoute.patch('/update/user/:id', userCtr.updateUser);
-userRoute.delete('/delete/user/:id', userCtr.deleteUser);
-
-userRoute.get('/user/expenses', userCtr.getExpensesByUser);
+userRoute.get('/', userCtr.getAllUsers);
+userRoute.get('/:id', userCtr.getUser);
+userRoute.post('/', userCtr.createUser);
+userRoute.patch('/:id', userCtr.updateUser);
+userRoute.delete('/:id', userCtr.deleteUser);
 
 module.exports = userRoute;

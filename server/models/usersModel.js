@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     imagePath: {
         type: String,
-        default: "",
+        default: "https://www.mdgllc.net/wp-content/uploads/2018/02/user_img.png",
         trim: true
     },
     incomes: [{
@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
     expenses: [{
         type: mongoose.Types.ObjectId,
         ref: 'Expenses'
+    }],
+    feedbacks: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'FeedBacks'
     }]
     },
     { timestamps: true }
